@@ -11,7 +11,7 @@ states = [' ', 'al','ar','az', 'co','ct','dc','de','fl','ga',
           'ut','va','vt','wa','wi','wv']
 
 
-current_page = st.sidebar.selectbox("Select Page", ["Home", "Pyspark Source Code"])
+current_page = st.sidebar.selectbox("Select Page", ["Home", "Pyspark Source Code", "Spacial Maps"])
 
 if current_page == "Home":
     st.title("Analytics Deployment App - Final Project DS 460")
@@ -94,6 +94,36 @@ if current_page == "Home":
     
     st.pyplot(ggplot.draw(same_month_plot))
 
+    st.write("For more details related to the code implemented to generate these charts, please go to the other \
+    page 'Pyspark Source Code'. Thank you!")
+
+
+elif current_page == "Pyspark Source Code":
+    st.title("Analytics Deployment App - Final Project DS 460")
+    st.subheader("Pyspark Code:")
+    st.write("Please, wait a few seconds while the Pyspark code loads. Thank you!")
+    st.write("Description of the data format: The pyspark function to_json() was used to download the full dataset \
+    of 30,000 records. Databricks was presenting impediments to download the full dataset since the dataframe, \
+    worked up to a certain point, contained columns of StructType which cannot be written as csv format. Solution \
+    for this was to transform the StructType columns into JSON format. This solved the problem, and now the csv data \
+    is in a format that is easier for Pandas to work with.")
+
+    HtmlFile = open("Analytics_Deployment_App.html")
+    source_code = HtmlFile.read() 
+    components.html(source_code, height = 500)
+
+elif current_page == "Spacial Maps":
+    st.title("Analytics Deployment App - Final Project DS 460")
+    st.write("Please, wait about 30 seconds while the spatial maps are loaded. Also when switching from the Spatial Maps page \
+    to ther other pages, you are probably going to experience some delay time, about 40 seconds. Don't worry, this is due to \
+    the plotly library being used for the spacial maps which doesn't do very well handling very large records. In our case \
+    our dataset contains about 30,000 records. This will slow a little the runtime process of our streamlit app, thank you for being \
+    so patient!")
+
+    st.write("The Spacial Maps included here display the top 10 brands by their color ranking. Blue for ranking 1, \
+    purple for ranking 2, orange for ranking 3, and yellow for ranking 4. This will help us to see what locations in the US \
+    were more populated with brands of a specific ranking.")
+
     plotly_day = pd.read_csv("lat_long_same_day_topBrands.csv")
     plotly_day['text_to_display'] = plotly_day['same_day_brand'] + ' - Raking Top: ' + plotly_day['same_day_top_rank'].astype(str)
 
@@ -112,10 +142,6 @@ if current_page == "Home":
 
     st.plotly_chart(same_day_fig)
 
-    st.write("Additionally, spacial maps are included displaying top 10 brands by their color ranking. Blue for ranking 1, \
-    purple for ranking 2, orange for ranking 3, and yellow for ranking 4. This will help us to see what locations in the US \
-    were more populated with brands of a specific ranking.")
-
     plotly_month = pd.read_csv("lat_long_month_topBrands.csv")
     plotly_month['text_to_display'] = plotly_month['same_month_brand'] + ' - Raking Top: ' + plotly_month['same_month_top_rank'].astype(str)
 
@@ -133,21 +159,3 @@ if current_page == "Home":
     )
 
     st.plotly_chart(same_month_fig)
-
-    st.write("For more details related to the code implemented to generate these charts, please go to the other \
-    page 'Pyspark Source Code'. Thank you!")
-
-
-elif current_page == "Pyspark Source Code":
-    st.title("Analytics Deployment App - Final Project DS 460")
-    st.subheader("Pyspark Code:")
-    st.write("Please, wait a few seconds while the Pyspark code loads. Thank you!")
-    st.write("Description of the data format: The pyspark function to_json() was used to download the full dataset \
-    of 30,000 records. Databricks was presenting impediments to download the full dataset since the dataframe, \
-    worked up to a certain point, contained columns of StructType which cannot be written as csv format. Solution \
-    for this was to transform the StructType columns into JSON format. This solved the problem, and now the csv data \
-    is in a format that is easier for Pandas to work with.")
-
-    HtmlFile = open("Analytics_Deployment_App.html")
-    source_code = HtmlFile.read() 
-    components.html(source_code, height = 500)

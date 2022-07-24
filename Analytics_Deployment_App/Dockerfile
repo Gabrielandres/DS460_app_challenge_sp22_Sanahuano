@@ -4,4 +4,5 @@ WORKDIR /Analytics_Deployment_App
 COPY requirements.txt ./requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
-CMD streamlit run streamlit_app.py
+# CMD streamlit run streamlit_app.py
+CMD streamlit run --server.port $PORT streamlit_app.py
